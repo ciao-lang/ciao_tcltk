@@ -17,7 +17,7 @@
 :- doc(title, "The Tcl/Tk interface").
 
 :- doc(author,"Montse Iglesias Urraca").
-:- doc(author, "The CLIP Group").
+:- doc(author, "The Ciao Development Team").
 :- doc(address, "@tt{http://www.clip.dia.fi.upm.es/}").
 :- doc(address, "Facultad de Inform@'{a}tica").
 :- doc(address, "Universidad Polit@'{e}cnica de Madrid").
