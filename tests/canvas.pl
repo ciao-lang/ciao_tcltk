@@ -2,7 +2,6 @@
 
 :- use_module(library(tcltk)). 
 :- use_module(library(aggregates)).
-:- use_module(library(strings)).
 :- use_module(library(system)).
 :- use_module(library(lists), [append/3]).
 
