@@ -32,7 +32,7 @@
 :- use_module(library(write)).
 :- use_module(library(read)).
 :- use_module(library(strings), [string/3]).
-:- use_module(library(streams_utils), [write_string/2]).
+:- use_module(library(stream_utils), [write_string/2]).
 :- use_module(library(format), [format/3]).
 
 :- set_prolog_flag(multi_arity_warnings, off).
