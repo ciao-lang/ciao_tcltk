@@ -1,8 +1,5 @@
 :- use_module(library(tcltk)).
 
-:- use_package(classic).
-
-
 p(yes).
 q(yes).
 r(yes, no).

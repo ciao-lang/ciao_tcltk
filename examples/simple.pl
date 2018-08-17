@@ -1,7 +1,6 @@
 :- module(simple, [main/0]).
 
 :- use_module(library(tcltk)).
-:- use_package(classic).
      
 hello('Hello, world!').
 
