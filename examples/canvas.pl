@@ -1,5 +1,6 @@
 :- module(canvas,[test/0,main/0]).
 
+:- use_module(engine(io_basic)).
 :- use_module(library(tcltk)). 
 :- use_module(library(system)).
 

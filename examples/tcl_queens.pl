@@ -1,5 +1,6 @@
 :- module(tcl_queens,[main/0, test/0],[assertions,isomodes,regtypes]).
 
+:- use_module(engine(io_basic)).
 :- use_module(library(tcltk)).
 :- use_module(library(lists)).
 

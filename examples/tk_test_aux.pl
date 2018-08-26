@@ -5,6 +5,7 @@
         quit/0],
         [objects]).
 
+:- use_module(engine(io_basic)).
 
 hello :-
         display('Hello !!!!'),

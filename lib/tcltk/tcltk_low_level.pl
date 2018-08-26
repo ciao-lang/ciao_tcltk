@@ -17,6 +17,8 @@
 	],
 	[assertions,isomodes,regtypes]).
 
+:- use_module(engine(stream_basic)).
+:- use_module(engine(io_basic)).
 :- use_module(library(terms)).
 
 %%------------------------------------------------------------------------

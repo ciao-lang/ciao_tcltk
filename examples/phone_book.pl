@@ -1,6 +1,4 @@
-:- module(phone_book,[main/0]).
-
-:- use_package(persdb).
+:- module(phone_book,[main/0],[hiord, persdb]).
 
 :- use_module(library(aggregates)).
 :- use_module(library(tcltk)).

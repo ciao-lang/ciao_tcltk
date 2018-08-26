@@ -36,6 +36,7 @@
 	]).
 
 :- use_module(engine(internals)).
+:- use_module(library(lists), [member/2]).
 :- use_module(library(write)).
 :- use_module(engine(hiord_rt), ['$meta_call'/1]). 
 
