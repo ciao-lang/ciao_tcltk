@@ -1,6 +1,5 @@
-:- module(phone_book,[main/0],[hiord, persdb]).
+:- module(phone_book,[main/0],[hiord, persdb,datafacts]).
 
-:- use_module(engine(data_facts)).
 :- use_module(library(aggregates)).
 :- use_module(library(tcltk)).
 
