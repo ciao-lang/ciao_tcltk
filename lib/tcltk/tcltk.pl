@@ -43,7 +43,7 @@
 :- set_prolog_flag(multi_arity_warnings, off).
 
 %%------------------------------------------------------------------------
-:- doc(copyright,"@include{DocCopyright.lpdoc}").
+:- doc(copyright,"@include{FreeDocLicense.lpdoc}").
 
 :- doc(summary, "This document includes the reference manual of
    the Ciao Prolog @index{Tcl/Tk bidirectional interface}. This
