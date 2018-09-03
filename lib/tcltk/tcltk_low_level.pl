@@ -17,10 +17,6 @@
 	],
 	[assertions,isomodes,regtypes]).
 
-:- use_module(engine(stream_basic)).
-:- use_module(engine(io_basic)).
-:- use_module(library(terms)).
-
 %%------------------------------------------------------------------------
 :- doc(title,
         "Low level interface library to Tcl/Tk").
@@ -28,8 +24,10 @@
 :- doc(author,"Montse Iglesias Urraca").
 %%------------------------------------------------------------------------
 
-:- use_module(library(sockets)).
+:- use_module(library(streams)).
+:- use_module(library(terms)).
 :- use_module(library(system)).
+:- use_module(library(sockets)).
 :- use_module(library(process)).
 :- use_module(library(write)).
 :- use_module(library(read)).
