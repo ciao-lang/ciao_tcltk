@@ -20,37 +20,37 @@ phone_book_store(N,T) :-
 
 
 main :- 
-	tk_new([name('Ciao+TclTk - Phone_book')],I),
-	tcl_eval(I,'source phone_book.tcl',_),
-	menu(I).
+    tk_new([name('Ciao+TclTk - Phone_book')],I),
+    tcl_eval(I,'source phone_book.tcl',_),
+    menu(I).
 
 menu(I) :-
-	tcl_eval(I,[show_menu],_),
-	tk_next_event(I,Event),
-	tcl_eval(I,[clear_board_menu],_),
-	( Event = name -> name_recall(I)
-	  ;( Event = store -> store(I)
-	   ; closedown(I)
-	   )
-	).
+    tcl_eval(I,[show_menu],_),
+    tk_next_event(I,Event),
+    tcl_eval(I,[clear_board_menu],_),
+    ( Event = name -> name_recall(I)
+      ;( Event = store -> store(I)
+       ; closedown(I)
+       )
+    ).
 
 closedown(X) :- tcl_delete(X).
 
 name_recall(I) :- 
-	phone_book_search(N,T),
-	tcl_eval(I,[show_solution_search,br(N),br(T)],_),
-	tk_next_event(I,Event),
-	( Event = quit -> closedown(I)
-	  ; ( Event = menu -> tcl_eval(I,[clear_name_recall],_),menu(I)
-	    ; fail
-	    )
-	).
+    phone_book_search(N,T),
+    tcl_eval(I,[show_solution_search,br(N),br(T)],_),
+    tk_next_event(I,Event),
+    ( Event = quit -> closedown(I)
+      ; ( Event = menu -> tcl_eval(I,[clear_name_recall],_),menu(I)
+        ; fail
+        )
+    ).
 
 store(I) :- 
-	tcl_eval(I,[show_solution_store],_),
-	tk_next_event(I,Event),
-	( Event = quit -> closedown(I)
-	  ; ( Event = menu -> tcl_eval(I,[clear_store],_), menu(I)
-	    ; call(Event), tcl_eval(I,[clear_store],_), store(I)
-	    )
-	).
+    tcl_eval(I,[show_solution_store],_),
+    tk_next_event(I,Event),
+    ( Event = quit -> closedown(I)
+      ; ( Event = menu -> tcl_eval(I,[clear_store],_), menu(I)
+        ; call(Event), tcl_eval(I,[clear_store],_), store(I)
+        )
+    ).

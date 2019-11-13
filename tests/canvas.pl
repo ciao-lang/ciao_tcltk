@@ -15,26 +15,26 @@
 main:- test.
 
 test:-
-	tcl_new(Interp),
-	test_aux(Interp),
-        tcl_delete(Interp),
-	!.
+    tcl_new(Interp),
+    test_aux(Interp),
+    tcl_delete(Interp),
+    !.
 
 test_aux(Interp):-
-	tcl_eval(Interp,[canvas, '.c -height 300 -width 300 -background white'],_),
-	tcl_eval(Interp,[pack, '.c'],_),
-	tcl_eval(Interp,['.c', 'create oval 7 7 133 133 -outline black -fill gray80 -width 2'],_ID),
-	tcl_eval(Interp,['.c', 'create oval 39 49 53 63 -outline black -fill black'],_ID1),
-	tcl_eval(Interp,['.c', 'create oval 102 63 88 49 -outline black -fill black'],ID2),
-	tcl_eval(Interp,['.c', 'create polygon 70 67 74 81 69 77 67 81  -fill black'],_ID3 ),
-	tcl_eval(Interp,['.c', 'create arc 21 21 119 119 -start 225 -extent 95 -style arc -outline black -width 3'],_ID4),
-        pause(2),
-        move_it(5, Interp, ID2).
+    tcl_eval(Interp,[canvas, '.c -height 300 -width 300 -background white'],_),
+    tcl_eval(Interp,[pack, '.c'],_),
+    tcl_eval(Interp,['.c', 'create oval 7 7 133 133 -outline black -fill gray80 -width 2'],_ID),
+    tcl_eval(Interp,['.c', 'create oval 39 49 53 63 -outline black -fill black'],_ID1),
+    tcl_eval(Interp,['.c', 'create oval 102 63 88 49 -outline black -fill black'],ID2),
+    tcl_eval(Interp,['.c', 'create polygon 70 67 74 81 69 77 67 81  -fill black'],_ID3 ),
+    tcl_eval(Interp,['.c', 'create arc 21 21 119 119 -start 225 -extent 95 -style arc -outline black -width 3'],_ID4),
+    pause(2),
+    move_it(5, Interp, ID2).
 
 move_it(0, _, _).
 move_it(N, Interp, Id):-
-        N > 0,
-        N1 is N - 1,
-        tcl_eval(Interp,['.c','move', Id,10,10],_),
-        pause(1),
-        move_it(N1, Interp, Id).
+    N > 0,
+    N1 is N - 1,
+    tcl_eval(Interp,['.c','move', Id,10,10],_),
+    pause(1),
+    move_it(N1, Interp, Id).

@@ -7,8 +7,8 @@ output_name := 'ciao_tcltk'.
 filepath := ~ciaofilepath_common.
 
 doc_structure :=
-	'tcltk/tcltk'-['tcltk/tcltk_low_level'].
-	 %
+    'tcltk/tcltk'-['tcltk/tcltk_low_level'].
+     %
 %  'window_class_doc',
 %    'widget_class_doc',
 %      'menu_class_doc',

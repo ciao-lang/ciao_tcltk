@@ -6,5 +6,5 @@
 % :- test main.
 
 main:-
-	canvas:test,
-	!.
+    canvas:test,
+    !.

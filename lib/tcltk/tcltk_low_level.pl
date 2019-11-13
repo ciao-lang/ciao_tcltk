@@ -3,23 +3,23 @@
 %%------------------------------------------------------------------------
 
 :- module(tcltk_low_level,
-	[
-	    new_interp/2,
-%%	    new_interp_file/2,
-	    tcltk/2,
-	    tcltk_raw_code/2,
-	    receive_result/2,
-	    send_term/2,
-	    receive_event/2,
-	    receive_list/2,
-	    receive_confirm/2,
-	    delete/1
-	],
-	[assertions,isomodes,regtypes]).
+    [
+        new_interp/2,
+%%          new_interp_file/2,
+        tcltk/2,
+        tcltk_raw_code/2,
+        receive_result/2,
+        send_term/2,
+        receive_event/2,
+        receive_list/2,
+        receive_confirm/2,
+        delete/1
+    ],
+    [assertions,isomodes,regtypes]).
 
 %%------------------------------------------------------------------------
 :- doc(title,
-        "Low level interface library to Tcl/Tk").
+    "Low level interface library to Tcl/Tk").
 
 :- doc(author,"Montse Iglesias Urraca").
 %%------------------------------------------------------------------------
@@ -72,9 +72,9 @@ tclCommand(_).
 
 :- pred new_interp(-TclInterpreter,+Options) :: tclInterpreter * list
 
-        # "Creates two sockets, the term socket and the event socket,
-           and opens a pipe to process @em{wish} in a new shell
-           invoked with the specified @var{Options}.".
+    # "Creates two sockets, the term socket and the event socket,
+       and opens a pipe to process @em{wish} in a new shell
+       invoked with the specified @var{Options}.".
 
 %% :- pred new_interp_file(+FileName,-TclInterpreter) :: string * tclInterpreter
 %% 
@@ -86,29 +86,29 @@ tclCommand(_).
 %%------------------------------------------------------------------------
 
 new_interp(X, _) :-
-        nonvar(X),
-        !,
-        fail.
+    nonvar(X),
+    !,
+    fail.
 new_interp('$wish$'(P,Strm,TermStream,EventStream), Options) :-
-        current_host(Host),
-        bind_socket(Port,1,Socket),
-        number_codes(Port,PortCode),
-        process_call(path('wish'), Options, [stdin(stream(Strm)), background(P)]),
-	%
-        write_string(Strm,"set prolog_host "),
-        write(Strm,Host),nl(Strm),flush_output(Strm),
-        write_string(Strm,"set prolog_port "),
-        write_string(Strm,PortCode),nl(Strm),
-        flush_output(Strm),
-        bind_socket(EPort,1,ESocket),
-        number_codes(EPort,EPortCode),
-        write_string(Strm,"set event_port "),
-        write_string(Strm,EPortCode),nl(Strm),
-        flush_output(Strm),
-        send_initial_code(Strm),
-        socket_accept(Socket,TermStream),
-        socket_accept(ESocket,EventStream),
-        true.
+    current_host(Host),
+    bind_socket(Port,1,Socket),
+    number_codes(Port,PortCode),
+    process_call(path('wish'), Options, [stdin(stream(Strm)), background(P)]),
+    %
+    write_string(Strm,"set prolog_host "),
+    write(Strm,Host),nl(Strm),flush_output(Strm),
+    write_string(Strm,"set prolog_port "),
+    write_string(Strm,PortCode),nl(Strm),
+    flush_output(Strm),
+    bind_socket(EPort,1,ESocket),
+    number_codes(EPort,EPortCode),
+    write_string(Strm,"set event_port "),
+    write_string(Strm,EPortCode),nl(Strm),
+    flush_output(Strm),
+    send_initial_code(Strm),
+    socket_accept(Socket,TermStream),
+    socket_accept(ESocket,EventStream),
+    true.
 
 %% (Outdated)
 %%
@@ -141,30 +141,30 @@ new_interp('$wish$'(P,Strm,TermStream,EventStream), Options) :-
 %%------------------------------------------------------------------------
 :- pred delete(+TclInterpreter) :: tclInterpreter 
 
-        # "Terminates the @em{wish} process and closes the pipe, term
-          socket and event socket. Deletes the interpreter
-          @var{TclInterpreter} from the system".
+    # "Terminates the @em{wish} process and closes the pipe, term
+      socket and event socket. Deletes the interpreter
+      @var{TclInterpreter} from the system".
 %%------------------------------------------------------------------------
 
 delete('$wish$'(P,Strm,TermStrm,EventStrm)) :-
 % was commented
-        write_string(Strm,"uplevel 0 exit"),
-        nl(Strm),
-        flush_output(Strm),
+    write_string(Strm,"uplevel 0 exit"),
+    nl(Strm),
+    flush_output(Strm),
 % end comment
-        close(TermStrm),
-        close(Strm),
-        close(EventStrm),
-	%
-	process_join(P).
+    close(TermStrm),
+    close(Strm),
+    close(EventStrm),
+    %
+    process_join(P).
 
 %%------------------------------------------------------------------------
 send_initial_code(Strm) :-
-        core(String),
-        write_string(Strm,String),
-        nl(Strm),
-        flush_output(Strm),
-        fail.
+    core(String),
+    write_string(Strm,String),
+    nl(Strm),
+    flush_output(Strm),
+    fail.
 
 send_initial_code(_).
 
@@ -174,29 +174,29 @@ send_initial_code(_).
 %%------------------------------------------------------------------------
 :- pred tcltk_raw_code(+String,+TclInterpreter) :: string * tclInterpreter 
 
-        # "Sends the tcltk code items of the @var{Stream} to the
-          @var{TclInterpreter}".
+    # "Sends the tcltk code items of the @var{Stream} to the
+      @var{TclInterpreter}".
 %%------------------------------------------------------------------------
 
 tcltk_raw_code(Str,'$wish$'(_,Strm,_,_)) :-
-        string(Str,String,""),
-        !,
-        write_string(Strm,String),
-        nl(Strm),
-        flush_output(Strm).
+    string(Str,String,""),
+    !,
+    write_string(Strm,String),
+    nl(Strm),
+    flush_output(Strm).
 
 /*
 copy_stdin('$wish$'(_,Strm,_,_)) :-
-        !,
-        copy_stdin_aux(Strm).
+    !,
+    copy_stdin_aux(Strm).
 
 copy_stdin_aux(Strm) :-
-        get_code(Byte),
-        Byte =\= -1,
-        !,
-        put_code(Strm,Byte),
-        flush_output(Strm),
-        copy_stdin_aux(Strm).
+    get_code(Byte),
+    Byte =\= -1,
+    !,
+    put_code(Strm,Byte),
+    flush_output(Strm),
+    copy_stdin_aux(Strm).
 
 copy_stdin_aux(_).
 */
@@ -207,100 +207,100 @@ copy_stdin_aux(_).
 %%------------------------------------------------------------------------
 :- pred tcltk(+Code,+TclInterpreter) :: tclCommand * tclInterpreter 
 
-        # "Sends the @var{Code} converted to string to the @var{TclInterpreter}".
+    # "Sends the @var{Code} converted to string to the @var{TclInterpreter}".
 %%------------------------------------------------------------------------
 
 tcltk(Code,'$wish$'(_,Strm,_,_)) :-
-        !,
-        nl(Strm),
-        send_code(Code,Strm).
+    !,
+    nl(Strm),
+    send_code(Code,Strm).
 
 %%------------------------------------------------------------------------
 
 send_code([],Strm) :-
-        !,
-        nl(Strm),
-        flush_output(Strm).
+    !,
+    nl(Strm),
+    flush_output(Strm).
 
 send_code([Number|Nc],Strm) :-
-        number(Number),
-        !,
-        number_codes(Number,NumberAsCode),
-        write_string(Strm,NumberAsCode),
-        write(Strm,' '),
-        send_code(Nc,Strm).
-        
+    number(Number),
+    !,
+    number_codes(Number,NumberAsCode),
+    write_string(Strm,NumberAsCode),
+    write(Strm,' '),
+    send_code(Nc,Strm).
+    
 send_code([chars(String)|Nc],Strm) :-
-        !,
-        send_code([String|Nc],Strm).
+    !,
+    send_code([String|Nc],Strm).
 
 send_code([dq(Code)|Nc],Strm) :-
-        write(Strm,'\"'),
-        send_code(Code,Strm),
-        write(Strm,'\" '),
-        !,
-        send_code(Nc,Strm).
+    write(Strm,'\"'),
+    send_code(Code,Strm),
+    write(Strm,'\" '),
+    !,
+    send_code(Nc,Strm).
 
 send_code([sqb(Code)|Nc],Strm) :-
-        write(Strm,'['),
-        send_code(Code,Strm),
-        write(Strm,'] '),
-        !,
-        send_code(Nc,Strm).
+    write(Strm,'['),
+    send_code(Code,Strm),
+    write(Strm,'] '),
+    !,
+    send_code(Nc,Strm).
 
 send_code([br(Code)|Nc],Strm) :-
-        write(Strm,'{'),
-        send_code(Code,Strm),
-        write(Strm,'} '),
-        !,
-        send_code(Nc,Strm).
+    write(Strm,'{'),
+    send_code(Code,Strm),
+    write(Strm,'} '),
+    !,
+    send_code(Nc,Strm).
 
 send_code([min(Code)|Nc],Strm) :-
-        atom(Code),
-        !,
-        write(Strm,'-'),
-        write(Strm,Code),
-        write(Strm,' '),
-        send_code(Nc,Strm).
+    atom(Code),
+    !,
+    write(Strm,'-'),
+    write(Strm,Code),
+    write(Strm,' '),
+    send_code(Nc,Strm).
 
 send_code([format(Fmt,Args)|Nc],Strm) :-
-        format(Strm,Fmt,Args),
-        !,
-        send_code(Nc,Strm).
+    format(Strm,Fmt,Args),
+    !,
+    send_code(Nc,Strm).
 
 send_code([write(Term)|Nc],Strm) :-
-        write(Strm,Term),
-        !,
-        send_code(Nc,Strm).
+    write(Strm,Term),
+    !,
+    send_code(Nc,Strm).
 
 send_code([tcl(Var)|Nc],Strm) :-
-        number_codes(Var,Str),
-        atom_codes(Atom,Str),
-        write(Strm,Atom),
-        write(Strm,' '),
-        send_code(Nc,Strm).
+    number_codes(Var,Str),
+    atom_codes(Atom,Str),
+    write(Strm,Atom),
+    write(Strm,' '),
+    send_code(Nc,Strm).
 
 send_code([Atom|Nc],Strm) :-
-        atom(Atom),
-        !,
-        write(Strm,Atom),
-        write(Strm,' '),
-        send_code(Nc,Strm).
+    atom(Atom),
+    !,
+    write(Strm,Atom),
+    write(Strm,' '),
+    send_code(Nc,Strm).
 
 send_code([Str|Nc],Strm) :-
-        string(Str,String,""),
-        !,
-        write_string(Strm,String),
-        write(Strm,' '),
-        send_code(Nc,Strm).
+    string(Str,String,""),
+    !,
+    write_string(Strm,String),
+    write(Strm,' '),
+    send_code(Nc,Strm).
 
 send_code([_|Nc],Strm) :-
-        !,
-        send_code(Nc,Strm).
+    !,
+    send_code(Nc,Strm).
 
 send_code(Not_a_list,Strm) :-
-        !,
-        send_code([Not_a_list],Strm).
+    !,
+    send_code([Not_a_list],Strm).
 
 %%------------------------------------------------------------------------
 %% SEND A PROLOG TERM TO TCL/TK
@@ -308,16 +308,16 @@ send_code(Not_a_list,Strm) :-
 %%------------------------------------------------------------------------
 :- pred send_term(+String,+TclInterpreter) :: string * tclInterpreter 
 
-        # "Sends the goal executed to the
-          @var{TclInterpreter}. @var{String} has the predicate with
-          unified variables".
+    # "Sends the goal executed to the
+      @var{TclInterpreter}. @var{String} has the predicate with
+      unified variables".
 %%------------------------------------------------------------------------
 
 send_term(Term,'$wish$'(_,_,Stream,_)) :-
-        write_term(Stream,Term,[]),
-        nl(Stream),
-	flush_output(Stream).
-        
+    write_term(Stream,Term,[]),
+    nl(Stream),
+    flush_output(Stream).
+    
 
 %%------------------------------------------------------------------------
 %% READ A PROLOG TERM FROM TCL/TK
@@ -326,24 +326,24 @@ send_term(Term,'$wish$'(_,_,Stream,_)) :-
 %%------------------------------------------------------------------------
 :- pred receive_result(-Result,+TclInterpreter) :: string * tclInterpreter 
 
-        # "Receives the @var{Result} of the last @em{TclCommand} into
-           the @var{TclInterpreter}. If the @em{TclCommand} is not
-           correct the @em{wish} process is terminated and a message
-           appears showing the error".
+    # "Receives the @var{Result} of the last @em{TclCommand} into
+       the @var{TclInterpreter}. If the @em{TclCommand} is not
+       correct the @em{wish} process is terminated and a message
+       appears showing the error".
 %%------------------------------------------------------------------------
 receive_result(Result,I) :-
-        receive_term(Term,I),
-        get_result(Term,Result,I).
+    receive_term(Term,I),
+    get_result(Term,Result,I).
 
 get_result(:(tcltk_low_level,tcl_result(X)),Result,_) :- 
-        Result = X.
+    Result = X.
 get_result(:(tcltk_low_level,tcl_error(_)),_,I) :-
-        delete(I),
-        fail.
+    delete(I),
+    fail.
 
 receive_term(Term,'$wish$'(_,_,Stream,_)) :-
-	catch(read_term(Stream,Term,[]), Error, tcl_read_error(Error)),
-        exceptions(Term).
+    catch(read_term(Stream,Term,[]), Error, tcl_read_error(Error)),
+    exceptions(Term).
 
 % receive_term(Term,VarNames,'$wish$'(_,_,Stream,_)) :-
 %         catch(read_term(Stream,Term,[variable_names(VarNames)]), Error, tcl_read_error(Error)).
@@ -353,12 +353,12 @@ receive_term(Term,'$wish$'(_,_,Stream,_)) :-
 %%------------------------------------------------------------------------
 
 exceptions(Term) :-
-        catch(Term, E, tcl_error(E)).
+    catch(Term, E, tcl_error(E)).
 
 tcl_error(_).
 
 tcl_result(_).
-%	display(tcl_result(A)), nl.
+%       display(tcl_result(A)), nl.
 
 %%________________________________________________________________________
 %% READ A PROLOG LIST OF TERMS FROM TCLTK
@@ -367,41 +367,41 @@ tcl_result(_).
 %%------------------------------------------------------------------------
 :- pred receive_event(-Event,+TclInterpreter) :: list * tclInterpreter 
 
-        # "Receives the @var{Event} from the event socket of the
-          @var{TclInterpreter}.".
+    # "Receives the @var{Event} from the event socket of the
+      @var{TclInterpreter}.".
 %%------------------------------------------------------------------------
 
 receive_event([Term],'$wish$'(_,_,_,Stream)) :-
-        read_term(Stream,Term,[]).
+    read_term(Stream,Term,[]).
 
 %%------------------------------------------------------------------------
 :- pred receive_list(-List,+TclInterpreter) :: list * tclInterpreter 
 
-        # "Receives the @var{List} from the event socket of the
-          @var{TclInterpreter}.The @var{List} has all the predicates
-          that have been inserted from Tcl/Tk with the command
-          prolog_event.  It is a list of terms.".
+    # "Receives the @var{List} from the event socket of the
+      @var{TclInterpreter}.The @var{List} has all the predicates
+      that have been inserted from Tcl/Tk with the command
+      prolog_event.  It is a list of terms.".
 %%------------------------------------------------------------------------
 
 receive_list([Term|Nt],'$wish$'(_,_,_,Stream)) :-
-        catch(read_term(Stream,Term,[]), Error, tcl_read_error(Error)), 
-        Term \== end_of_event_list,!,
-	receive_list(Nt,'$wish$'(_,_,_,Stream)).
+    catch(read_term(Stream,Term,[]), Error, tcl_read_error(Error)), 
+    Term \== end_of_event_list,!,
+    receive_list(Nt,'$wish$'(_,_,_,Stream)).
 receive_list([end_of_event_list],_).
 
 tcl_read_error(_) :- 
-	fail.
+    fail.
 
 
 %%------------------------------------------------------------------------
 :- pred receive_confirm(-String,+TclInterpreter) :: string * tclInterpreter 
 
-        # "Receives the @var{String} from the event socket of the
-          @var{TclInterpreter} when a term inserted into the event
-          queue is managed.".
+    # "Receives the @var{String} from the event socket of the
+      @var{TclInterpreter} when a term inserted into the event
+      queue is managed.".
 %%------------------------------------------------------------------------
 receive_confirm(Term,'$wish$'(_,_,_,Stream)) :-
-        catch(read_term(Stream,Term,[]), Error, tcl_read_error(Error)).
+    catch(read_term(Stream,Term,[]), Error, tcl_read_error(Error)).
 
 %%------------------------------------------------------------------------
 %% INITIAL CODE
@@ -411,10 +411,10 @@ receive_confirm(Term,'$wish$'(_,_,_,Stream)) :-
 
 :- pred core(-String) :: string  
 
-        # "@pred{core/1} is a set of facts which contain @var{String}s
-           to be sent to the Tcl/Tk interpreter on startup.  They
-           implement miscelaneous Tcl/Tk procedures which are used by
-           the Tcl/Tk interface.".
+    # "@pred{core/1} is a set of facts which contain @var{String}s
+       to be sent to the Tcl/Tk interpreter on startup.  They
+       implement miscelaneous Tcl/Tk procedures which are used by
+       the Tcl/Tk interface.".
 
 %%------------------------------------------------------------------------
 
@@ -464,7 +464,7 @@ core("  }").
 core("  gets  $term_socket term ").
 core("  set ret [unify_term execute($agoal)) $term] ").
 core("  if {$term == \"fail\" || $ret == 0} {").
-core("	   return 0").
+core("     return 0").
 core("  } else { return 1}").
 core("} ").
 

@@ -1,17 +1,17 @@
 :- module(tcltk,
-	[
-	    tcl_new/1,
-	    tcl_eval/3,
-	    tcl_delete/1,
-	    tcl_event/3,
-	    tclInterpreter/1,
-	    tclCommand/1,
-	    tk_event_loop/1,
-	    tk_main_loop/1,
-	    tk_new/2,
-	    tk_next_event/2
-	],
-	[assertions,isomodes,regtypes]).
+    [
+        tcl_new/1,
+        tcl_eval/3,
+        tcl_delete/1,
+        tcl_event/3,
+        tclInterpreter/1,
+        tclCommand/1,
+        tk_event_loop/1,
+        tk_main_loop/1,
+        tk_new/2,
+        tk_next_event/2
+    ],
+    [assertions,isomodes,regtypes]).
 
 %%----------------------------------------------------------------------
 :- doc(title, "The Tcl/Tk interface").
@@ -23,17 +23,17 @@
 :- doc(address, "Universidad Polit@'{e}cnica de Madrid").
 
 :- use_module(tcltk_low_level, 
-	[
-	    new_interp/2,
-	    delete/1,
-	    tcltk/2,
-	    tcltk_raw_code/2,
-	    send_term/2,
-	    receive_result/2,
-	    receive_list/2,
-	    receive_event/2,
-	    receive_confirm/2
-	]).
+    [
+        new_interp/2,
+        delete/1,
+        tcltk/2,
+        tcltk_raw_code/2,
+        send_term/2,
+        receive_result/2,
+        receive_list/2,
+        receive_event/2,
+        receive_confirm/2
+    ]).
 
 :- use_module(engine(internals)).
 :- use_module(library(lists), [member/2]).
@@ -68,7 +68,7 @@
    as index.  @em{Terms} is the string which contains the printed
    representation of prolog @em{terms}.
 
-               
+           
 
 @noindent @bf{Prolog to Tcl}
 
@@ -82,17 +82,17 @@
 
 @begin{verbatim}
       Command         --> Atom  @{ other than [] @}
-                        | Number
-                        | chars(PrologString)
-                        | write(Term)
-                        | format(Fmt,Args)
-                        | dq(Command)
-                        | br(Command)
-                        | sqb(Command)
-                        | min(Command)
-                        | ListOfCommands
+                    | Number
+                    | chars(PrologString)
+                    | write(Term)
+                    | format(Fmt,Args)
+                    | dq(Command)
+                    | br(Command)
+                    | sqb(Command)
+                    | min(Command)
+                    | ListOfCommands
       ListOfCommands  --> []
-                        |[Command|ListOfCommands]
+                    |[Command|ListOfCommands]
 @end{verbatim}
 
 where:
@@ -155,7 +155,7 @@ number:
     This library includes two main specific Tcl commands:
 
 @begin{description} 
-	
+    
  @item{@tt{prolog} @em{Goal}} @em{Goal} is a string containing the
  printed representation of a Prolog goal. The goal will be
  called in the user module unless it is prefixed with another
@@ -183,7 +183,7 @@ number:
 Additionally, seven extra Tcl commands are defined.
 
 @begin{description}
-	
+    
  @item{@tt{prolog_delete_event}} Deletes the first @em{term} of the
  @em{terms} queue.
 
@@ -260,7 +260,7 @@ tclInterpreter(_).
 %%------------------------------------------------------------------------
 
 tcl_new(I) :-
-        new_interp(I, []).
+    new_interp(I, []).
 
 %%------------------------------------------------------------------------
 :- pred tcl_delete(+TclInterpreter) :: tclInterpreter # "Given a
@@ -269,73 +269,73 @@ tcl_new(I) :-
 %%------------------------------------------------------------------------
 
 tcl_delete(I) :-
-        delete(I).
+    delete(I).
 
 %%------------------------------------------------------------------------
 :- pred tcl_eval(+TclInterpreter,+Command,-Result) 
 
-        :: tclInterpreter * tclCommand * string
+    :: tclInterpreter * tclCommand * string
 
-        # "Evaluates the commands given in @var{Command} in the Tcl
-          interpreter @var{TclInterpreter}. The result will be stored
-          as a string in @var{Result}. If there is an error in
-          @em{Command} an exception is raised. The error messages will
-          be @em{Tcl Exception:} if the error is in the syntax of the
-          Tcl/Tk code or @em{Prolog Exception:}, if the error is in
-          the prolog term.".
+    # "Evaluates the commands given in @var{Command} in the Tcl
+      interpreter @var{TclInterpreter}. The result will be stored
+      as a string in @var{Result}. If there is an error in
+      @em{Command} an exception is raised. The error messages will
+      be @em{Tcl Exception:} if the error is in the syntax of the
+      Tcl/Tk code or @em{Prolog Exception:}, if the error is in
+      the prolog term.".
 %%------------------------------------------------------------------------
 
 tcl_eval_result(X, Result, FromModule) :-
-        ( member(execute(Goal),[Result]) -> 
-	  (catch(do_call(Goal,FromModule),Error,tcl_loop_exit(X,Error)) ->
-	   send_term(Goal,X)
-	  ;
-	   send_term(fail, X)
-          )
-	;
-            true
-        ).
+    ( member(execute(Goal),[Result]) -> 
+      (catch(do_call(Goal,FromModule),Error,tcl_loop_exit(X,Error)) ->
+       send_term(Goal,X)
+      ;
+       send_term(fail, X)
+      )
+    ;
+        true
+    ).
 
 :- meta_predicate tcl_eval(?,?,addmodule).
 :- impl_defined(tcl_eval/3).
 
 tcl_eval(I, Command, Result, FromModule) :-
-	tcltk_raw_code("prolog_set_tcl_eval_mode", I),
-        tcltk_raw_code("prolog_cmd {",I),
-        tcltk(Command,I),
-        tcltk_raw_code("}",I),
-	tcl_eval_aux(Command, I, Result, [], FromModule),
-	tcltk_raw_code("prolog_unset_tcl_eval_mode", I).
+    tcltk_raw_code("prolog_set_tcl_eval_mode", I),
+    tcltk_raw_code("prolog_cmd {",I),
+    tcltk(Command,I),
+    tcltk_raw_code("}",I),
+    tcl_eval_aux(Command, I, Result, [], FromModule),
+    tcltk_raw_code("prolog_unset_tcl_eval_mode", I).
 
 tcl_eval_aux(Command, I, Result, AccResult, FromModule) :-
-        (receive_result(Result1,I) ->
-	 tcl_eval_result(I, Result1, FromModule),
-	 (not_waiting_for_more(Result1) ->
-	  AccResult = Result
-	 ;
-	  tcl_eval_aux(Command, I, Result, Result1, FromModule)
-	 )
- 	;
- 	 true).
+    (receive_result(Result1,I) ->
+     tcl_eval_result(I, Result1, FromModule),
+     (not_waiting_for_more(Result1) ->
+      AccResult = Result
+     ;
+      tcl_eval_aux(Command, I, Result, Result1, FromModule)
+     )
+    ;
+     true).
 
 
 not_waiting_for_more(tcl_eval_finished).
 
 :- pred tcl_event(+TclInterpreter,+Command,-Events)
 
-        :: tclInterpreter * tclCommand * list
+    :: tclInterpreter * tclCommand * list
 
-        # "Evaluates the commands given in @var{Command} in the Tcl
-          interpreter whose handle is provided in
-          @var{TclInterpreter}. @var{Events} is a list of terms stored
-          from Tcl by @em{prolog_event}. Blocks until there is
-          something on the event queue".
+    # "Evaluates the commands given in @var{Command} in the Tcl
+      interpreter whose handle is provided in
+      @var{TclInterpreter}. @var{Events} is a list of terms stored
+      from Tcl by @em{prolog_event}. Blocks until there is
+      something on the event queue".
 %%------------------------------------------------------------------------
 
 tcl_event(I,Command,EventList):-
-        tcltk(Command,I),
-        tcltk_raw_code("prolog_list_events ",I),
-        receive_list(EventList,I).
+    tcltk(Command,I),
+    tcltk_raw_code("prolog_list_events ",I),
+    receive_list(EventList,I).
 
 %%------------------------------------------------------------------------
 %%------------------------------------------------------------------------
@@ -349,11 +349,11 @@ tclCommand(_).
 %%------------------------------------------------------------------------
 :- pred tk_new(+Options,-TclInterpreter)
 
-        :: list * tclInterpreter
+    :: list * tclInterpreter
 
-        # "Performs basic Tcl and Tk initialization and creates the
-          main window of a Tk application.@var{Options} is a list of
-          optional elements according to:
+    # "Performs basic Tcl and Tk initialization and creates the
+      main window of a Tk application.@var{Options} is a list of
+      optional elements according to:
 
 @begin{description}
 
@@ -376,50 +376,50 @@ after all windows (and the interpreter) have been deleted.
 %%------------------------------------------------------------------------
 
 tk_new(Options, Interp):-
-        tk_options(Options,_,Appname,_,Display,_,File),
-        !,
-        tk_new(Interp,Appname,Display,File).
+    tk_options(Options,_,Appname,_,Display,_,File),
+    !,
+    tk_new(Interp,Appname,Display,File).
 
 
 tk_options(Option,_,_,_,_,_,_):-
-        var(Option),
-        !,
-        fail.
+    var(Option),
+    !,
+    fail.
 tk_options([],App,App,Disp,Disp,File,File).
 tk_options([Option|Options],App0,App,Disp0,Disp,File0,File):-
-        nonvar(Option),
-        tk_option(Option,App0,App1,Disp0,Disp1,File0,File1),
-        tk_options(Options,App1,App,Disp1,Disp,File1,File).
+    nonvar(Option),
+    tk_option(Option,App0,App1,Disp0,Disp1,File0,File1),
+    tk_options(Options,App1,App,Disp1,Disp,File1,File).
 
 tk_option(file(File),App0,App,Disp0,Disp,_,Filename):-
-        App=App0, 
-        Disp=Disp0,
-        Filename = File.
+    App=App0, 
+    Disp=Disp0,
+    Filename = File.
 tk_option(name(Name),_,App,Disp0,Disp,File0,File):-
-        App=Name,
-        Disp=Disp0,
-        File=File0.
+    App=Name,
+    Disp=Disp0,
+    File=File0.
 tk_option(display(Display),App0,App,_,Disp,File0,File):-
-        App=App0,
-        Disp=Display,
-        File=File0.
+    App=App0,
+    Disp=Display,
+    File=File0.
 
 % Need to put in the second condition of the if case no display
 tk_new(Interp,Appname,Display,File):-
-        ( nonvar(Appname) ->
-	     Opts = ['-name',Appname|Opts0]
-	; Opts = Opts0
-	),
-        ( nonvar(Display) ->
-	    Opts0 = ['-display',Display|Opts1]
-	; Opts0 = Opts1
-	),
-        ( nonvar(File) ->
-	    Opts1 = [File|Opts2]
-	; Opts1 = Opts2
-	),
-	Opts2 = [],
-        new_interp(Interp,Opts).
+    ( nonvar(Appname) ->
+         Opts = ['-name',Appname|Opts0]
+    ; Opts = Opts0
+    ),
+    ( nonvar(Display) ->
+        Opts0 = ['-display',Display|Opts1]
+    ; Opts0 = Opts1
+    ),
+    ( nonvar(File) ->
+        Opts1 = [File|Opts2]
+    ; Opts1 = Opts2
+    ),
+    Opts2 = [],
+    new_interp(Interp,Opts).
 
 %%------------------------------------------------------------------------
 :- pred tk_event_loop(+TclInterpreter) :: tclInterpreter 
@@ -437,62 +437,62 @@ tk_new(Interp,Appname,Display,File):-
 :- meta_predicate tk_event_loop(addmodule).
 
 tk_event_loop(X,FromModule):-
-        receive_event(Event,X),
+    receive_event(Event,X),
  ( 
-        member(execute(Goal), Event) -> 
-        (
-            Goal = exit_tk_event_loop ->       % Leave event loop
+    member(execute(Goal), Event) -> 
+    (
+        Goal = exit_tk_event_loop ->       % Leave event loop
 
+        tcl_delete(X),
+        true
+    ;
+        (
+            Goal = exit_tk_event_loop(G1) ->
+            send_term(Goal,X),
             tcl_delete(X),
-            true
-        ;
-            (
-                Goal = exit_tk_event_loop(G1) ->
-                send_term(Goal,X),
-                tcl_delete(X),
 %               catch(do_call(G1,FromModule),Error,tcl_loop_exit(X,Error)),
-                catch(do_call(G1,_FromModule),Error,_), true
-            ;
-                catch(do_call(Goal,FromModule),Error,tcl_loop_exit(X,Error)),
-                send_term(Goal,X) ,
-                tk_event_loop(X,FromModule)
-            )
+            catch(do_call(G1,_FromModule),Error,_), true
+        ;
+            catch(do_call(Goal,FromModule),Error,tcl_loop_exit(X,Error)),
+            send_term(Goal,X) ,
+            tk_event_loop(X,FromModule)
         )
+    )
   %   (do_call(Goal,FromModule), tk_event_loop(X,FromModule)) 
  ;      %% Unknown command --- raise exception
-        %     throw(unknown_command_in_tk_event_loop(X,FromModule))
-        ( 
-            Event = [end_of_file] ->
-            true
-        ;
-            unknown_command_in_tk_event_loop(X)
-        )
+    %     throw(unknown_command_in_tk_event_loop(X,FromModule))
+    ( 
+        Event = [end_of_file] ->
+        true
+    ;
+        unknown_command_in_tk_event_loop(X)
+    )
  ).
 
 unknown_command_in_tk_event_loop(X) :-
-        write('Prolog exception: '),
-        write('The term must have the form execute(goal)'),
-        tcl_delete(X),
-        fail.
+    write('Prolog exception: '),
+    write('The term must have the form execute(goal)'),
+    tcl_delete(X),
+    fail.
 
 %predicate used to exit closing the main window
 tcl_loop_exit(X,E):-
-        write('Prolog exception: '),
-        write(E),
-        tcl_delete(X),
-        fail.
+    write('Prolog exception: '),
+    write(E),
+    tcl_delete(X),
+    fail.
 
 do_call(Module:Goal,_FromModule) :-
-        module_concat(Module,Goal,NewGoal), !,
-        '$meta_call'(NewGoal).
+    module_concat(Module,Goal,NewGoal), !,
+    '$meta_call'(NewGoal).
 do_call(Goal,FromModule) :-
-        module_concat(FromModule,Goal,NewGoal),
-        !,'$meta_call'(NewGoal).
+    module_concat(FromModule,Goal,NewGoal),
+    !,'$meta_call'(NewGoal).
 
 %%------------------------------------------------------------------------
 :- pred tk_next_event(+TclInterpreter,-Event) 
-        
-        :: tclInterpreter * string 
+    
+    :: tclInterpreter * string 
 
 # "Processes events until there is at least one Prolog event
    associated with @var{TclInterpreter}. @var{Event} is the term
@@ -502,54 +502,54 @@ do_call(Goal,FromModule) :-
 
 
 tk_next_event(X,Event) :-
-        tcl_event(X,[],[Event1|_]),
-        Event1 == end_of_event_list,!,
-        tk_next_event(X,Event).
+    tcl_event(X,[],[Event1|_]),
+    Event1 == end_of_event_list,!,
+    tk_next_event(X,Event).
 tk_next_event(X,Event) :-
-        tcl_event(X,[],[Event|_]),
-        tcltk_raw_code("prolog_delete_event ",X),
-        receive_confirm(_,X).
+    tcl_event(X,[],[Event|_]),
+    tcltk_raw_code("prolog_delete_event ",X),
+    receive_confirm(_,X).
 
 tk_next_event(_,_).
 
 %%------------------------------------------------------------------------
 :- pred tk_main_loop(+TclInterpreter) 
-        
-        :: tclInterpreter  
-        
-        # "Passes control to Tk until all windows are gone.".
+    
+    :: tclInterpreter  
+    
+    # "Passes control to Tk until all windows are gone.".
 %%------------------------------------------------------------------------
 
 :- meta_predicate tk_main_loop(addmodule).
 
 
 tk_main_loop(X,FromModule):-
-        main_loop_tk_next_event(X,Event),
-        tcltk_raw_code("prolog_delete_event ",X),
-	nonvar(Event),
-        ( member(end_of_event_list,[Event]) -> 
-          ( tk_main_loop(X,FromModule) )
-        ;
-	    tcl_eval_if_needed(Event, X, FromModule),
-            tk_main_loop(X,FromModule)
-        ).
+    main_loop_tk_next_event(X,Event),
+    tcltk_raw_code("prolog_delete_event ",X),
+    nonvar(Event),
+    ( member(end_of_event_list,[Event]) -> 
+      ( tk_main_loop(X,FromModule) )
+    ;
+        tcl_eval_if_needed(Event, X, FromModule),
+        tk_main_loop(X,FromModule)
+    ).
 tk_main_loop(_,_).
 
 
 main_loop_tcl_event(I,Command,EventList):-
-        tcltk(Command,I),
-        receive_list(EventList,I).
+    tcltk(Command,I),
+    receive_list(EventList,I).
 
 main_loop_tk_next_event(X,Event) :-
-        main_loop_tcl_event(X,[],[Event1|_]),
-        (Event1 == end_of_event_list ->
-	 !, main_loop_tk_next_event(X,Event)
-	;
-	 Event = Event1).
+    main_loop_tcl_event(X,[],[Event1|_]),
+    (Event1 == end_of_event_list ->
+     !, main_loop_tk_next_event(X,Event)
+    ;
+     Event = Event1).
 
 tcl_eval_if_needed(Event, X, FromModule) :-
-	Event = execute(_Goal), !,
-	tcl_eval_result(X, Event, FromModule).
+    Event = execute(_Goal), !,
+    tcl_eval_result(X, Event, FromModule).
 tcl_eval_if_needed(end_of_file,_,_).
 tcl_eval_if_needed(Event, X, FromModule) :-
-	catch(do_call(Event, FromModule), Error, tcl_loop_exit(X, Error)).
+    catch(do_call(Event, FromModule), Error, tcl_loop_exit(X, Error)).
