@@ -137,10 +137,7 @@ consisting of a GUI to a program which calculates the factorial of a
 number:
 
 @noindent
-@begin{verbatim}
-@includeverbatim{tcltk/doc_files/tcl_factorial.pl}
-@end{verbatim}
-
+@includecode{tcltk/doc_files/tcl_factorial.pl}
 
 @noindent @bf{Tcl to Prolog}
 
@@ -232,16 +229,12 @@ be seen in directory examples):
 Prolog side:
 
 @noindent
-@begin{verbatim}
-@includeverbatim{tcltk/doc_files/simple.pl}
-@end{verbatim}
+@includecode{tcltk/doc_files/simple.pl}
 
 Tcl side (simple.tcl):
 
 @noindent
-@begin{verbatim}
-@includeverbatim{tcltk/doc_files/simple.tcl}
-@end{verbatim}
+@includecode{tcltk/doc_files/simple.tcl}
 
 ").
 
